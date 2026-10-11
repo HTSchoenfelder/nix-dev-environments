@@ -1,9 +1,10 @@
 # Nix development environments
 
-Independent, reproducible Nix development environments for two common stacks:
+Independent, reproducible Nix development environments for common stacks:
 
 - **.NET + Angular/TypeScript**: .NET SDK 10, Node.js 22, pnpm and language servers
 - **Go**: Go, gopls, gotools, golangci-lint and Delve
+- **STACKIT infrastructure**: STACKIT CLI, Terraform, kubectl and Helm
 
 Each environment is a self-contained flake with its own lock file, so it can be
 updated, used or copied into a project independently. These shells are for
@@ -15,7 +16,10 @@ from `nix develop`.
 ├── dotnet-angular/
 │   ├── flake.nix
 │   └── flake.lock
-└── go/
+├── go/
+│   ├── flake.nix
+│   └── flake.lock
+└── stackit/
     ├── flake.nix
     └── flake.lock
 ```
@@ -41,6 +45,9 @@ nix develop ./dotnet-angular
 
 # Go
 nix develop ./go
+
+# STACKIT infrastructure
+nix develop ./stackit
 ```
 
 The first invocation downloads the pinned dependencies. Project-specific build
@@ -73,7 +80,8 @@ change:
 ```console
 (cd dotnet-angular && nix flake update)
 # or: (cd go && nix flake update)
+# or: (cd stackit && nix flake update)
 
-git add dotnet-angular/flake.lock go/flake.lock
+git add */flake.lock
 git commit -m "Update Nix dependencies"
 ```
