@@ -1,0 +1,23 @@
+.cache/
+.direnv/
+
+# .NET
+**/bin/
+**/obj/
+*.user
+
+# Angular / Node.js
+**/node_modules/
+**/.angular/
+**/dist/
+*.tsbuildinfo
+
+# Go
+coverage.out
+*.test
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+*~
