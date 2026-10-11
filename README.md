@@ -1,12 +1,24 @@
 # Nix development environments
 
-Reproducible Nix development shells for two common stacks:
+Independent, reproducible Nix development environments for two common stacks:
 
 - **.NET + Angular/TypeScript**: .NET SDK 10, Node.js 22, pnpm and language servers
 - **Go**: Go, gopls, gotools, golangci-lint and Delve
 
-These shells are for application development. You do not need to develop a Nix
-package to benefit from `nix develop`.
+Each environment is a self-contained flake with its own lock file, so it can be
+updated, used or copied into a project independently. These shells are for
+application development; you do not need to develop a Nix package to benefit
+from `nix develop`.
+
+```text
+.
+├── dotnet-angular/
+│   ├── flake.nix
+│   └── flake.lock
+└── go/
+    ├── flake.nix
+    └── flake.lock
+```
 
 ## Prerequisites
 
@@ -25,13 +37,11 @@ git clone https://github.com/HTSchoenfelder/nix-dev-environments.git
 cd nix-dev-environments
 
 # .NET + Angular/TypeScript
-nix develop .#dotnet-angular
+nix develop ./dotnet-angular
 
 # Go
-nix develop .#go
+nix develop ./go
 ```
-
-Running `nix develop` without a shell name opens the .NET/Angular environment.
 
 The first invocation downloads the pinned dependencies. Project-specific build
 caches are stored in `.cache/`, which Git ignores.
@@ -57,10 +67,13 @@ go mod init example.com/hello-go
 
 ## Updating
 
-Refresh the pinned nixpkgs revision and commit the resulting lock-file change:
+Refresh one environment's pinned nixpkgs revision and commit its lock-file
+change:
 
 ```console
-nix flake update
-git add flake.lock
+(cd dotnet-angular && nix flake update)
+# or: (cd go && nix flake update)
+
+git add dotnet-angular/flake.lock go/flake.lock
 git commit -m "Update Nix dependencies"
 ```
